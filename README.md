@@ -1,6 +1,6 @@
-# The Voidrice (Luke Smith <https://lukesmith.xyz>'s dotfiles)
+# My Dotfiles (copy from Luke Smith <https://lukesmith.xyz>'s dotfiles)
 
-These are the dotfiles deployed by [LARBS](https://larbs.xyz) and as seen on [my YouTube channel](https://youtube.com/c/lukesmithxyz).
+These are dotfiles meant to be deployed by [LARBS](https://larbs.xyz) and as seen on [lukes YouTube channel](https://youtube.com/c/lukesmithxyz).
 
 - Very useful scripts are in `~/.local/bin/`
 - Settings for:

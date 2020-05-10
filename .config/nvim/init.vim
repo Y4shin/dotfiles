@@ -18,13 +18,25 @@ Plug 'vimwiki/vimwiki'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-commentary'
 Plug 'kovetskiy/sxhkd-vim'
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-obsession'
+
+
 call plug#end()
 
-set bg=light
-set go=a
-set mouse=a
-set nohlsearch
-set clipboard+=unnamedplus
+" On pressing tab, insert 2 spaces
+set expandtab
+" show existing tab with 2 spaces width
+set tabstop=2
+set softtabstop=2
+" when indenting with '>', use 2 spaces width
+set shiftwidth=2
+
+tnoremap <Esc> <C-\><C-n>
 
 " Some basics:
 	nnoremap c "_c
@@ -118,3 +130,15 @@ set clipboard+=unnamedplus
 if &diff
     highlight! link DiffText MatchParen
 endif
+
+
+" vim-latex-live-preview configuration
+let g:livepreview_previewer = 'st -e zathura'
+let g:livepreview_engine = 'latex_compile pdflatex'
+
+
+" Python configuration
+let g:python3_host_prog = '/usr/bin/python'
+let g:python_host_prog = '/usr/bin/python2'
+let g:python_recommended_style = 0
+set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab

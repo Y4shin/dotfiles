@@ -13,6 +13,7 @@ export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="brave"
 export READER="zathura"
+export NEXTCLOUD_PASS_NAME="nextcloud/yashin"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"

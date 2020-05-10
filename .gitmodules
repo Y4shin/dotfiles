@@ -1,3 +1,15 @@
 [submodule ".config/mpv/scripts/mpvSockets"]
 	path = .config/mpv/scripts/mpvSockets
 	url = https://github.com/wis/mpvSockets.git
+[submodule ".App_Sources/st"]
+	path = .App_Sources/st
+	url = git@github.com:Y4shin/st.git
+[submodule ".App_Sources/dmenu"]
+	path = .App_Sources/dmenu
+	url = git@github.com:Y4shin/dmenu.git
+[submodule ".App_Sources/dwm"]
+	path = .App_Sources/dwm
+	url = git@github.com:Y4shin/dwm.git
+[submodule ".App_Sources/dwmblocks"]
+	path = .App_Sources/dwmblocks
+	url = git@github.com:Y4shin/dwmblocks.git

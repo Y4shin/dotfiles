@@ -24,8 +24,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-obsession'
-
-
+Plug 'ap/vim-css-color'
 call plug#end()
 
 " On pressing tab, insert 2 spaces
@@ -62,6 +61,11 @@ tnoremap <Esc> <C-\><C-n>
 " Nerd tree
 	map <leader>n :NERDTreeToggle<CR>
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    if has('nvim')
+        let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
+    else
+        let NERDTreeBookmarksFile = '~/.vim' . '/NERDTreeBookmarks'
+    endif
 
 " vimling:
 	nm <leader>d :call ToggleDeadKeys()<CR>

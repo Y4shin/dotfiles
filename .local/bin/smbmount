@@ -1,0 +1,41 @@
+#!/bin/sh
+
+#Script to mount
+
+show_help() {
+  echo "TEST";
+}
+
+while getopts hp:d:s: opt
+do
+  case $opt in
+    h) show_help;exit 0;;
+    p) PREFIX=$OPTARG;;
+    d) MOUNTDIR=$OPTARG;;
+    s) SHARE=$OPTARG;;
+  esac
+done
+
+if [ -z "$PREFIX" ]
+then
+  PREFIX="smb";
+fi
+
+if [ -z "$MOUNTDIR" ]
+then
+  MOUNTDIR="$HOME/mnt";
+fi
+
+if [ -z "$SHARE" ]
+then
+  echo "Please provide a share with -s \"//shareaddress/share\"";
+  exit 1;
+fi
+
+#Retrieving SMB Password and Username from pass
+PASS=`pass "$PREFIX"_pass`
+USERNAME=`pass "$PREFIX"_name`
+
+MNT_UID=`id -u`
+MNT_GID=`id -g`
+gksudo -- mount -t cifs -o username=$USERNAME,password="$PASS",uid=$MNT_UID,gid=$MNT_GID $SHARE $MOUNTDIR

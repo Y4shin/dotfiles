@@ -147,7 +147,7 @@ super + F3
 	displayselect
 # Hibernate
 super + F4
-	prompt 'Hibernate computer?' 'sudo -A zzz -Z'
+	"st -e pulsemixer; kill -44 $(pidof dwmblocks)"
 super + F5 is unbound.
 # Start torrent daemon/open interface
 super + F6

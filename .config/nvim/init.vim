@@ -25,6 +25,15 @@ Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-obsession'
 Plug 'ap/vim-css-color'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'zchee/deoplete-jedi'
+Plug 'sebastianmarkow/deoplete-rust'
 call plug#end()
 
 " On pressing tab, insert 2 spaces
@@ -105,7 +114,7 @@ tnoremap <Esc> <C-\><C-n>
 " Ensure files are read as what I want:
 	let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 	map <leader>v :VimwikiIndex
-	let g:vimwiki_list = [{'path': '~/.vimwiki', 'path_html': '.vimwiki_html', 'syntax': 'default', 'ext': '.md'}]
+	let g:vimwiki_list = [{'path': '$VIMWIKI_DIR', 'path_html': '.vimwiki_html', 'syntax': 'default', 'ext': '.md'}]
 	autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 	autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
 	autocmd BufRead,BufNewFile *.tex set filetype=tex
@@ -146,3 +155,12 @@ let g:python3_host_prog = '/usr/bin/python'
 let g:python_host_prog = '/usr/bin/python2'
 let g:python_recommended_style = 0
 set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+let g:deoplete#sources#rust#racer_binary='/home/patric/.local/share/cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/home/patric/.local/src/rust/src'
+let g:deoplete#sources#rust#show_duplicates=1
+let g:deoplete#sources#rust#disable_keymap=1
+let g:deoplete#sources#rust#documentation_max_height=20

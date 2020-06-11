@@ -5,6 +5,7 @@ show_help() {
   echo "                     [-f WALLPAPER_PERSISTENCE_FILE]"
   echo "                     [-d DISPLAY]"
   echo "                     [-r RESOLUTION]"
+  echo "                     [-m MANUAL_WALLPAPER_FILE (has to be in walls dir)]"
   echo "Depends on set-wallpaper"
   echo "https://github.com/mjkillough/set-wallpaper"
 }
@@ -16,7 +17,7 @@ disp=$DISPLAY
 wall_path="$XDG_CONFIG_HOME/wall"
 wall_pers_file="$XDG_CONFIG_HOME/wall.jpg"
 resolution="none"
-while getopts ":hw:f:r:d:" opt; do
+while getopts ":hw:f:r:d:m:" opt; do
   case $opt in
     d)
       disp=$OPTARG
@@ -34,16 +35,24 @@ while getopts ":hw:f:r:d:" opt; do
       show_help
       exit
       ;;
+    m)
+      tmp_pic=$OPTARG
   esac
 done
+
+
+cur=`cat $wall_path/current`
+if [ "$tmp_pic" == "" ]
+then
+  pic=`ls $wall_path/walls | sed "/$cur/d" | shuf -n 1`
+else
+  pic="$tmp_pic"
+fi
 
 if [ $resolution == "none" ]
 then
   DISPLAY=$disp resolution=`xdpyinfo | awk '/dimensions/{print $2}'`
 fi
-echo "$resolution"
-cur=`cat $wall_path/current`
-pic=`ls $wall_path/walls | sed "/$cur/d" | shuf -n 1`
 echo "$pic" > $wall_path/current
 convert -resize "$resolution" $wall_path/walls/$pic $wall_pers_file
 DISPLAY=$disp set-wallpaper --fade-secs 1 --image "$wall_pers_file"

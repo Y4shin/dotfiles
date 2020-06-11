@@ -5,8 +5,13 @@
 # If you don't plan on reverting to bash, you can remove the link in ~/.profile
 # to clean up.
 
+#XDG spec
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+
 # Adds `~/.local/bin` to $PATH
-export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | paste -sd ':'):${$XDG_DATA_HOME:-$HOME/.local/share}/cargo/bin"
+export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | paste -sd ':'):${XDG_DATA_HOME:-$HOME/.local/share}/cargo/bin"
 
 # Default programs:
 export EDITOR="nvim"
@@ -16,10 +21,7 @@ export READER="zathura"
 export NEXTCLOUD_PASS_NAME="nextcloud/yashin"
 
 # ~/ Clean-up:
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
+#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export NOTMUCH_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/notmuch-config"
 export GTK2_RC_FILES="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc-2.0"
 export LESSHISTFILE="-"

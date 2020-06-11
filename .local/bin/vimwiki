@@ -1,0 +1,95 @@
+#!/bin/sh
+
+open_help() {
+  echo "Usage: vimwiki <COMMANDS>"
+  echo "<COMMANDS> can be either empty or a combination of commands listed below."
+  echo "When called without any commands, just displays vimwiki index."
+  echo "List of commands:"
+  echo "  help - Display this message. Supresses all other commands."
+  echo "  push - Commits all changes and pushes them to origin remote."
+  echo "         Supresses opening the vimwiki."
+  echo "  pull - Pulls new changes from remote origin. In case of merge conflicts,"
+  echo "         automatically calls git mergetool. Supresses opening the vimwiki."
+  echo "  open - Opens vimwiki despite of pull and push."
+}
+
+open_vimwiki() {
+  nvim -c VimwikiIndex
+}
+
+push_vimwiki() {
+  old_path=`pwd`
+  cd $VIMWIKI_DIR
+  git add . > /dev/null 2>&1 && git commit -m "Adding new vimwiki stuff. (vimwiki script)" > /dev/null 2>&1
+  push_msg=`git push`
+  if [ "$push_msg" == *"[rejected]"* ]
+  then
+    echo "Push rejected; pull first, merge changes then push."
+  else
+    echo "Pushed successfully."
+  fi
+  cd $old_path
+}
+
+pull_vimwiki() {
+  echo "PULL"
+  old_path=`pwd`
+  cd $VIMWIKI_DIR
+  pull_msg=`git pull`
+  if [ "$pull_msg" == *"CONFLICT"* ]
+  then
+    read -p "Detected merge conflicts. Press ENTER to start resolving them."
+    git mergetool
+  else
+    echo "Pulled successfully."
+  fi
+  cd $old_path
+}
+
+do_open=0
+do_push=0
+do_pull=0
+
+for var in "$@"
+do
+  if [ "$var" == "help" ]
+  then
+    open_help
+    exit
+  elif [ "$var" == "open" ]
+  then
+    do_open=1
+  elif [ "$var" == "push" ]
+  then
+    do_push=1
+  elif [ "$var" == "pull" ]
+  then
+    do_pull=1
+  else
+    echo "\"$var\" is not a recognized command. Use \"vimwiki help\" for more information."
+  fi
+done
+
+if [ $do_pull -eq 0 ] && [ $do_push -eq 0 ]
+then
+  open_vimwiki
+  exit 0
+fi
+
+if [ $do_pull -eq 1 ]
+then
+  pull_vimwiki
+fi
+
+if [ $do_push -eq 1 ]
+then
+  push_vimwiki
+fi
+
+if [ $do_open -eq 1 ]
+then
+  read -p "Press ENTER to continue"
+  open_vimwiki
+fi
+
+exit

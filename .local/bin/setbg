@@ -16,6 +16,9 @@ then
 elif [ -d "$1" ]
 then
   ln -sf "$(find "$(readlink -f "$1")" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$bgloc" && notify-send -i "$bgloc" "Random Wallpaper chosen."
+elif [ "$1" == "-r" ]
+then
+  ln -sf "$(find "$(readlink -f "$bgdir")" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$bgloc" && notify-send -i "$bgloc" "Random Wallpaper chosen."
 elif [ "$1" != "--startup" ]
 then
   filename=`ls "$bgdir" | sed "s/.png//g" | sed "s/.jpg//g" | dmenu -p "Choose background:" -r`

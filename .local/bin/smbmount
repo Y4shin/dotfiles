@@ -8,7 +8,7 @@ show_help() {
   echo "                     [-d mount directory]"
   echo "                     [-s smb address/share]"
 }
-
+#parsing commandline args
 while getopts hp:d:s: opt
 do
   case $opt in
@@ -19,27 +19,35 @@ do
   esac
 done
 
+#asking for information not given in commandline args
 if [ -z "$PREFIX" ]
 then
-  PREFIX="smb";
+  PASSMODE=`printf "pass\\nmanual"| dmenu -p "Use pass prefix or enter credentials manually?" -r`
+  if [ "$PASSMODE" == "pass" ]
+  then
+    echo "1"
+    PREFIX=`echo "" | dmenu -p "Pass prefix (prefix{_name,_pass}):"`
+    PASS=`pass "$PREFIX"_pass`
+    USERNAME=`pass "$PREFIX"_name`
+  elif [ "$PASSMODE" == "manual" ]
+  then
+    echo "2"
+    USERNAME=`echo "" | dmenu -p "Username:"`
+    PASS=`echo "" | dmenu -p "Password:" -P`
+  fi
 fi
 
 if [ -z "$MOUNTDIR" ]
 then
-  MOUNTDIR="$HOME/mnt";
+  MOUNTDIR=`printf "~/mnt\\n/mnt" | dmenu -p "Mount directory:"`;
 fi
 
 if [ -z "$SHARE" ]
 then
-  echo "Please provide a share with -s \"//shareaddress/share\"";
-  echo "Run \"smbmount -h\" for more info"
-  exit 1;
+  SHARE=`echo "" | dmenu -p "Full share address:"`
 fi
 
-#Retrieving SMB Password and Username from pass
-PASS=`pass "$PREFIX"_pass`
-USERNAME=`pass "$PREFIX"_name`
 
 MNT_UID=`id -u`
 MNT_GID=`id -g`
-gksudo -- mount -t cifs -o username=$USERNAME,password="$PASS",uid=$MNT_UID,gid=$MNT_GID $SHARE $MOUNTDIR
+sudo -A mount -t cifs -o username=$USERNAME,password="$PASS",uid=$MNT_UID,gid=$MNT_GID $SHARE $MOUNTDIR

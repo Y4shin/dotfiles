@@ -3,7 +3,10 @@
 #Script to mount
 
 show_help() {
-  echo "TEST";
+  echo "usage: smbmount [-h] [-p prefix for credentials retreived from pass"
+  echo "                         default=smb, prefix{_name,_pass}]"
+  echo "                     [-d mount directory]"
+  echo "                     [-s smb address/share]"
 }
 
 while getopts hp:d:s: opt
@@ -29,6 +32,7 @@ fi
 if [ -z "$SHARE" ]
 then
   echo "Please provide a share with -s \"//shareaddress/share\"";
+  echo "Run \"smbmount -h\" for more info"
   exit 1;
 fi
 

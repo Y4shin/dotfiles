@@ -42,5 +42,3 @@ alias \
 	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
 	tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf" \
 alias mbsync="mbsync -c ${XDG_CONFIG_HOME:-$HOME/.config}/isync/mbsyncrc"
-alias abook="abook -C ${XDG_CONFIG_HOME:-$HOME/.config}/abook/abookrc --datafile ${XDG_DATA_HOME:-$HOME/.local/share}/abook/abookdata"
-alias abookdir="cd ${XDG_DATA_HOME:-$HOME/.local/share}/abook/"

@@ -2,51 +2,71 @@
 
 #Script to mount
 
+
 show_help() {
   echo "usage: smbmount [-h] [-p prefix for credentials retreived from pass"
   echo "                         default=smb, prefix{_name,_pass}]"
   echo "                     [-d mount directory]"
   echo "                     [-s smb address/share]"
 }
+
+unmount() {
+  sudo -A umount $(mount | grep "type cifs" | sed 's/.*\ on\ //g;s/\ type\ cifs.*//g' | dmenu -r -p "Share to unmount")
+
+}
 #parsing commandline args
-while getopts hp:d:s: opt
+MANUAL=0
+while getopts hup:d:s: opt
 do
   case $opt in
     h) show_help;exit 0;;
-    p) PREFIX=$OPTARG;;
-    d) MOUNTDIR=$OPTARG;;
-    s) SHARE=$OPTARG;;
+    p) PREFIX=$OPTARG;MANUAL=1;;
+    d) MOUNTDIR=$OPTARG;MANUAL=1;;
+    s) SHARE=$OPTARG;MANUAL=1;;
+    u) unmount;exit 0;;
   esac
 done
-
-#asking for information not given in commandline args
-if [ -z "$PREFIX" ]
+if [ $MANUAL -eq 1 ]
 then
-  PASSMODE=`printf "pass\\nmanual"| dmenu -p "Use pass prefix or enter credentials manually?" -r`
-  if [ "$PASSMODE" == "pass" ]
+  #asking for information not given in commandline args
+  if [ -z "$PREFIX" ]
   then
-    echo "1"
-    PREFIX=`echo "" | dmenu -p "Pass prefix (prefix{_name,_pass}):"`
-    PASS=`pass "$PREFIX"_pass`
-    USERNAME=`pass "$PREFIX"_name`
-  elif [ "$PASSMODE" == "manual" ]
-  then
-    echo "2"
-    USERNAME=`echo "" | dmenu -p "Username:"`
-    PASS=`echo "" | dmenu -p "Password:" -P`
+    PASSMODE=`printf "pass\\nmanual"| dmenu -p "Use pass prefix or enter credentials manually?" -r`
+    if [ "$PASSMODE" == "pass" ]
+    then
+      echo "1"
+      PREFIX=`echo "" | dmenu -p "Pass prefix (prefix{_name,_pass}):"`
+      PASS=`pass "$PREFIX"_pass`
+      USERNAME=`pass "$PREFIX"_name`
+    elif [ "$PASSMODE" == "manual" ]
+    then
+      echo "2"
+      USERNAME=`echo "" | dmenu -p "Username:"`
+      PASS=`echo "" | dmenu -p "Password:" -P`
+    fi
   fi
-fi
 
-if [ -z "$MOUNTDIR" ]
-then
-  MOUNTDIR=`printf "~/mnt\\n/mnt" | dmenu -p "Mount directory:"`;
-fi
+  if [ -z "$MOUNTDIR" ]
+  then
+    MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
+  fi
 
-if [ -z "$SHARE" ]
-then
-  SHARE=`echo "" | dmenu -p "Full share address:"`
+  if [ -z "$SHARE" ]
+  then
+    SHARE=`echo "" | dmenu -p "Full share address:"`
+  fi
+else
+  if [ "$(printf "mount\nunmount" | dmenu -r -p "Choose mode:")" == "unmount" ]
+  then
+    unmount
+    exit 0
+  fi
+  CONF_FILE=`ls "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/" | sed "/mntdirs/d;/mounted/d" | dmenu -p "Select share:" -r`
+  source "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/$CONF_FILE"
+  PASS=`pass "$PREFIX"_pass`
+  USERNAME=`pass "$PREFIX"_name`
+  MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
 fi
-
 
 MNT_UID=`id -u`
 MNT_GID=`id -g`

@@ -6,7 +6,7 @@ HOSTNAME=`hostname`
 
 xset r rate 300 50
 # Map the caps lock key to super...
-  if [ "$HOSTNAME" == "x220" ]
+  if [ "$HOSTNAME" == "X220-artix" ] || [ "$HOSTNAME" == "SL410-artix" ]
 then
   setxkbmap de -option caps:super
 else

@@ -1,0 +1,4 @@
+SHARE="//192.168.179.25/Media"
+PREFIX="smb_home"
+#mounted:/mnt
+#mounted:/mnt

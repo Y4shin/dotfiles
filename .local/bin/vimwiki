@@ -6,6 +6,7 @@ open_help() {
   echo "When called without any commands, just displays vimwiki index."
   echo "List of commands:"
   echo "  help - Display this message. Supresses all other commands."
+  echo "  git  - Execute vim command in vimwiki directory."
   echo "  push - Commits all changes and pushes them to origin remote."
   echo "         Supresses opening the vimwiki."
   echo "  pull - Pulls new changes from remote origin. In case of merge conflicts,"
@@ -15,6 +16,14 @@ open_help() {
 
 open_vimwiki() {
   nvim -c VimwikiIndex
+}
+
+git_vimwiki() {
+  old_path=`pwd`
+  cd $VIMWIKI_DIR
+  git_args=`echo "$@" | sed "s/.*git\ //g"`
+  git $git_args
+  cd $old_path
 }
 
 push_vimwiki() {
@@ -55,6 +64,10 @@ do
   if [ "$var" == "help" ]
   then
     open_help
+    exit
+  elif [ "$var" == "git" ]
+  then
+    git_vimwiki "$@"
     exit
   elif [ "$var" == "open" ]
   then

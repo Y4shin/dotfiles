@@ -63,8 +63,8 @@ else
   fi
   CONF_FILE=`ls "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/" | sed "/mntdirs/d;/mounted/d" | dmenu -p "Select share:" -r`
   source "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/$CONF_FILE"
-  PASS=`pass "$PREFIX"_pass`
-  USERNAME=`pass "$PREFIX"_name`
+  PASS=`pass "$PREFIX"/pass`
+  USERNAME=`pass "$PREFIX"/login`
   MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
 fi
 

@@ -1,4 +1,2 @@
 SHARE="//192.168.179.25/Data"
-PREFIX="smb_home"
-#mounted:/mnt
-#mounted:/mnt
+PREFIX="smb_home/"

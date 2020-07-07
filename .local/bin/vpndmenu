@@ -3,13 +3,21 @@ cd ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/
 CUR=`cat cur`
 if [ -z "$CUR" ]
 then
-  VPN_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/$(ls ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/ | sed '/cred/d;/cur/d;/vpn.log/d' | dmenu)"
+  VPN_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/$(ls ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/ | sed '/cred/d;/cur/d;/vpn.log/d' | dmenu -r -p "Which connection?")"
   sudo -A -- openvpn $VPN_CONFIG_FILE > "${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/vpn.log" 2>&1 &
   OVPN_PID=$!
   printf "$OVPN_PID\n$(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')" > cur
   notify-send "vpndmenu" "Connecting with $(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')."
 else
-  sudo -A -- kill $(echo "$CUR" | head -n 1)
-  notify-send "vpndmenu" "Disconnected from $(echo "$CUR" | tail -n 1)."
-  echo "" > cur
+  NAME=`echo "$CUR" | tail -n 1`
+  VPN_PID=`echo "$CUR" | head -n 1`
+  DO_KILL=`printf "yes\nno" | dmenu -r -p "Terminate VPN conection\"$NAME\"?"`
+  if [ "$DO_KILL" == "yes" ]
+  then
+    sudo -A -- kill $VPN_PID
+    notify-send "vpndmenu" "Disconnected from $NAME."
+    echo "" > cur
+  else
+    notify-send "vpndmenu" "Keeping connection \"$NAME\" alive."
+  fi
 fi

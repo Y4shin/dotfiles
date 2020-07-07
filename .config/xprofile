@@ -11,6 +11,7 @@
 # Add this when you include flatpak in your system
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
 
+echo "" > $XDG_CONFIG_HOME/vpndmenu/cur
 mpd &			            # music player daemon-you might prefer it as a service though
 remaps &		          # run the remaps script, switching caps/esc and more; check it for more info
 setbg --startup &			          # set the background with the `setbg` script

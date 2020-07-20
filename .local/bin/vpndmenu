@@ -3,11 +3,16 @@ cd ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/
 CUR=`cat cur`
 if [ -z "$CUR" ]
 then
-  VPN_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/$(ls ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/ | sed '/cred/d;/cur/d;/vpn.log/d' | dmenu -r -p "Which connection?")"
-  sudo -A -- openvpn $VPN_CONFIG_FILE > "${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/vpn.log" 2>&1 &
-  OVPN_PID=$!
-  printf "$OVPN_PID\n$(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')" > cur
-  notify-send "vpndmenu" "Connecting with $(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')."
+  VPN_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/$(printf "$(ls ${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/ | sed '/cred/d;/cur/d;/vpn.log/d')\nCancel" | dmenu -r -p "Which connection?")"
+  if [ "$(echo $VPN_CONFIG_FILE | sed 's/.*\///g')" == "Cancel" ]
+  then
+    notify-send "vpndmenu" "Not connecting to VPN."
+  else
+    sudo -A -- openvpn $VPN_CONFIG_FILE > "${XDG_CONFIG_HOME:-$HOME/.config}/vpndmenu/vpn.log" 2>&1 &
+    OVPN_PID=$!
+    printf "$OVPN_PID\n$(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')" > cur
+    notify-send "vpndmenu" "Connecting with $(echo $VPN_CONFIG_FILE | sed 's/.*\///g;s/\..*//g')."
+  fi
 else
   NAME=`echo "$CUR" | tail -n 1`
   VPN_PID=`echo "$CUR" | head -n 1`

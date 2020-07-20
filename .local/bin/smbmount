@@ -10,9 +10,73 @@ show_help() {
   echo "                     [-s smb address/share]"
 }
 
-unmount() {
-  sudo -A umount $(mount | grep "type cifs" | sed 's/.*\ on\ //g;s/\ type\ cifs.*//g' | dmenu -r -p "Share to unmount")
+cancel() {
+  notify-send "smbmount" "No drives were mounted."
+}
 
+list() {
+  notify-send "smbmount" "NYI"
+}
+
+unmount() {
+  SHARE_TO_UNMOUNT=`mount | grep "type smb3" | sed 's/.*\ on\ //g;s/\ type\ smb3.*//g' | dmenu -r -p "Share to unmount"`
+  if [ -z "$SHARE_TO_UNMOUNT" ]
+  then
+    notify-send "smbmount" "Not unmounting"
+  else
+    sudo -A umount $SHARE_TO_UNMOUNT
+    notify-send "smbmount" "Unmounted share."
+  fi
+}
+
+#$1=mode(dmenu/pass)
+get_userpass() {
+  if [ -z "$PREFIX" ]
+  then
+    if [ "$1" == "dmenu" ]
+    then
+      USERNAME=`echo "" | dmenu -p "Username:"`
+      PASS=`echo "" | dmenu -p "Password:" -P`
+    elif [ "$1" == "pass" ]
+    then
+      USERNAME=`pass "$2"`
+      PASSWORD=`pass "$3"`
+    fi
+  else
+    USERNAME=`pass "$PREFIX/login"`
+    PASSWORD=`pass "$PREFIX/pass"`
+  fi
+}
+
+#$1=mode(manual/preset)
+get_share() {
+  if [ "$1" == "manual" ]
+  then
+    SHARE=`echo "//smbserveraddress/share" | dmenu -p "Full share address:"`
+  elif [ "$1" == "preset" ]
+  then
+    CONF_FILE=`ls "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/" | sed "/mntdirs/d;/mounted/d" | dmenu -p "Select share:" -r`
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/$CONF_FILE"
+  fi
+}
+
+get_mntdir() {
+  MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
+}
+
+#$1=username, $2=password, $3=share, $4=mountdir
+do_mount() {
+  MNT_UID=`id -u`
+  MNT_GID=`id -g`
+  CONFIRM=`printf "mount\ncancel" | dmenu -r -p "Mount \"$3\" to \"$4\""`
+  if [ "$CONFIRM" == "mount" ] || [ -z "$CONFIRM" ]
+  then
+    sudo -A mount -t smb3 -o username="$1",password="$2",uid=$MNT_UID,gid=$MNT_GID "$3" "$4"
+    notify-send "smbmount" "Mounted \"$3\" in \"$4\"."
+  elif [ "$CONFIRM" == "cancel" ]
+  then
+    notify-send "smbmount" "Did not mount share."
+  fi
 }
 #parsing commandline args
 MANUAL=0
@@ -26,48 +90,45 @@ do
     u) unmount;exit 0;;
   esac
 done
-if [ $MANUAL -eq 1 ]
+
+MODE=`printf "mount\nunmount\nlist\ncancel" | dmenu -r -p "Choose mode:"`
+if [ "$MODE" == "unmount" ]
 then
-  #asking for information not given in commandline args
-  if [ -z "$PREFIX" ]
-  then
-    PASSMODE=`printf "pass\\nmanual"| dmenu -p "Use pass prefix or enter credentials manually?" -r`
-    if [ "$PASSMODE" == "pass" ]
-    then
-      echo "1"
-      PREFIX=`echo "" | dmenu -p "Pass prefix (prefix{_name,_pass}):"`
-      PASS=`pass "$PREFIX"_pass`
-      USERNAME=`pass "$PREFIX"_name`
-    elif [ "$PASSMODE" == "manual" ]
-    then
-      echo "2"
-      USERNAME=`echo "" | dmenu -p "Username:"`
-      PASS=`echo "" | dmenu -p "Password:" -P`
-    fi
-  fi
-
-  if [ -z "$MOUNTDIR" ]
-  then
-    MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
-  fi
-
-  if [ -z "$SHARE" ]
-  then
-    SHARE=`echo "" | dmenu -p "Full share address:"`
-  fi
-else
-  if [ "$(printf "mount\nunmount" | dmenu -r -p "Choose mode:")" == "unmount" ]
-  then
-    unmount
-    exit 0
-  fi
-  CONF_FILE=`ls "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/" | sed "/mntdirs/d;/mounted/d" | dmenu -p "Select share:" -r`
-  source "${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/$CONF_FILE"
-  PASS=`pass "$PREFIX"/pass`
-  USERNAME=`pass "$PREFIX"/login`
-  MOUNTDIR=`cat ${XDG_CONFIG_HOME:-$HOME/.config}/smbmount/mntdirs | dmenu -p "Mount directory:"`;
+  unmount
+  exit 0
+elif [ "$MODE" == "list" ]
+then
+  list
+  exit 0
+elif [ "$MODE" == "cancel" ]
+then
+  cancel
+  exit 0
 fi
 
-MNT_UID=`id -u`
-MNT_GID=`id -g`
-sudo -A mount -t cifs -o username=$USERNAME,password="$PASS",uid=$MNT_UID,gid=$MNT_GID $SHARE $MOUNTDIR
+if [ -z "$SHARE" ]
+then
+  if [ $MANUAL -eq 1 ]
+  then
+    get_share manual
+  else
+    get_share preset
+  fi
+fi
+
+if [ -z "$PASSWORD" ]
+then
+  if [ $MANUAL -eq 1 ]
+  then
+    get_userpass dmenu
+  else
+    get_userpass pass
+  fi
+fi
+
+if [ -z "$MOUNTDIR" ]
+then
+  get_mntdir
+fi
+
+do_mount "$USERNAME" "$PASSWORD" "$SHARE" "$MOUNTDIR"

@@ -1,8 +1,63 @@
-http://lukesmith.xyz/rss.xml
-https://notrelated.libsyn.com/rss
-https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "~Luke Smith (YouTube)"
-https://www.archlinux.org/feeds/news/
-https://blog.fefe.de/rss.xml "Fefe"
-https://www.tagesschau.de/xml/atom/
-https://rss.sueddeutsche.de/rss/Topthemen
-https://rss.sueddeutsche.de/app/service/rss/alles/index.rss?output=rss
+==TECH==
+
+http://lukesmith.xyz/rss.xml "~Luke Smith" "tech"
+https://notrelated.libsyn.com/rss "~Notrelated Podcast" "tech" "podcast"
+
+==REPOS==
+
+https://github.com/lukesmithxyz/voidrice/commits/master.atom "~Luke Smith Dotfiles repo" "tech" "system" "linux" "repo"
+
+==SYSTEM==
+
+https://www.archlinux.org/feeds/news "~Arch News" "arch" "linux"
+https://artixlinux.org/feed.php "~Artix News" "arch" "linux"
+
+==BLOGS==
+
+https://blog.fefe.de/rss.xml "~Fefes Blog" "tech" "blog"
+https://feeds.feedburner.com/dkriesel-de "~David Kriesel(de)" "tech" "blog"
+
+
+==NACHRICHTEN==
+
+https://www.tagesschau.de/xml/atom/ "~Tagesschau" "news"
+https://rss.sueddeutsche.de/rss/Topthemen "~SZ Top Themen" "news"
+https://rss.sueddeutsche.de/app/service/rss/alles/index.rss?output=rss "~SZ Alles" "news"
+https://www.heise.de/rss/heise-atom.xml "~Heise Alles" "news" "tech"
+https://www.heise.de/rss/heise-top-atom.xml "~Heise Top Themen" "news" "tech"
+https://www.heise.de/developer/rss/news-atom.xml "~Heise Developer" "news" "tech"
+
+==PEERTUBE==
+
+https://videos.lukesmith.xyz/feeds/videos.xml?accountId=3 "~Luke Smith" "pt "tech" "linux"
+
+==YOUTUBE==
+https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "~Luke Smith" "yt" "tech" "linux"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw "~LinusTechTips" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCzH549YlZhdhIqhtvz7XHmQ "~Alexi Bexi" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA "~Computerphile" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCS0N5baNlQWJCUrhCEo8WlA "~Ben Eater" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC7dF9qfBMXrSlaaFFDvV_Yg "~Gigguk" "yt" "anime"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC3XTzVzaHQEd30rQbuvCtTQ "~Last Week Tonight" "yt" "entertainment"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCOWcZ6Wicl-1N34H0zZe38w "~L1 Linux" "yt" "tech" "linux"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC4w1YQAJMWOz4qtxinq55LQ "~L1 Tech" "yt" "tech" "linux"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCLx053rWZxCiYWsBETgdKrQ "~LGR" "yt" "tech" "gaming" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCcTt3O4_IW5gnA0c58eXshg "~8-Bit-Keys" "yt" "music" "tech" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC8uT9cgJorJPWu7ITLGo9Ww "~8-Bit-Guy" "yt" "tech" "gaming" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCjFaPUcJU1vwk193mnW_w1w "~Modern Vintage Gamer" "yt" "tech" "gaming" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCpvtp7mH0Cdq8FQUxcjDq0Q "~My Life in Gaming" "yt" "gaming" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCZHpIFMfoJJ_1QxNGLJTzyA "~MrWissen2Go" "yt" "news"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCNNEMxGKV1LsKZRt4vaIbvw "~NEO Magazin Royale" "yt" "news" "entertainment"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCxsQFG_8Dbt1sZhLReL2mUw "~Nerd City" "yt" "news" "entertainment"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCarEovlrD9QY-fy-Z6apIDQ "~Patriot Act" "yt" "news" "entertainment"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC4rqhyiTs7XyuODcECvuiiQ "~Scott The Woz" "yt" "gaming" "retro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCdBK94H6oZT2Q7l0-b0xmMg "~Short Circuit" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCKGMHVipEvuZudhHD05FOYA "~Simplicissimus" "yt" "news"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCO2x-p9gg9TLKneXlibGR7w "~Snazzy Labs" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC5NOEUbkLheQcaaRldYW5GA "~Tagesschau" "yt" "news"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCeeFfhMcJa1kjtfZAGskOCA "~TechLinked" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC0vBXGSyV14uvJ4hECDOl0Q "~TechQuickie" "yt" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCcmxOGYGF51T1XsqQLewGtQ "~Trash Taste" "yt" "anime" "podcast"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCry1ZVKLslbZXuQgsf-3TXg "~Trash Taste Highlights" "yt" "anime"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCsnGwSIHyoYN0kiINAGUKxg "~Wolfgang's Channel" "yt" "tech" "linux"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg "~Distrotube" "yt" "tech" "linux"

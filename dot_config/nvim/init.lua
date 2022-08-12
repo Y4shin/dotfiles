@@ -29,41 +29,47 @@
 
 
 -- List of configs to load
-local configs = {"nvim", "nvim-tree", "treesitter", "lsp", "nvim-cmp", "luasnip"}
+local configs = {"nvim", "nvim-tree", "treesitter", "lsp", "nvim-cmp", "luasnip", "formatter", "color"}
 
 -- Load packer (package manager)
 require("plugins")
 
--- Defining a function to check if a file can be read (i.e. for our purposes
--- whether it exists).
-function file_exists(name)
-  local f=io.open(name,"r")
-  if f~=nil then io.close(f) return true else return false end
+-- Defining a function to check if a module exists
+function isModuleAvailable(name)
+  if package.loaded[name] then
+    return true
+  else
+    for _, searcher in ipairs(package.searchers or package.loaders) do
+      local loader = searcher(name)
+      if type(loader) == 'function' then
+        package.preload[name] = loader
+        return true
+      end
+    end
+    return false
+  end
 end
 
 -- Loop over specified config folders
 for _, config_name in ipairs(configs) do
   -- Create path and module string
-  local config_dir = "lua/config/" .. config_name
   local config_package = "config." .. config_name
 
   -- Check if init config exists and load it if it does.
-  local init_file = config_dir .. "/init.lua"
   local init_package = config_package
-  if (file_exists(init_file)) then
+  if isModuleAvailable(init_package) then
     require(init_package)
   end
 
   -- Check if map config exists and load it if it does.
-  local map_file = config_dir .. "/map.lua"
   local map_package = config_package .. ".map"
-  if (file_exists(map_file)) then
+  if isModuleAvailable(map_package) then
     require(map_package)
   end
 
-  local after_file = config_dir .. "/after.lua"
+  -- Check if after config exists and load it if it does.
   local after_package = config_package .. ".after"
-  if (file_exists(after_file)) then
+  if isModuleAvailable(after_package) then
     require(after_package)
   end
 end

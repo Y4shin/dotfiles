@@ -29,7 +29,8 @@
 
 
 -- List of configs to load
-local configs = {"nvim", "nvim-tree", "treesitter", "lsp", "nvim-cmp", "luasnip", "formatter", "color"}
+local configs = {"nvim", "nvim-tree", "treesitter", "lsp", "nvim-cmp", "luasnip", "formatter", "color", "bufferline",
+                 "scope", "fterm", "consolation"}
 
 -- Load packer (package manager)
 require("plugins")

@@ -1,0 +1,10 @@
+[user]
+	name = Patric Plattner
+	email = patric@patricplattner.de
+	signingkey = 0xECE82FD6AE4375F0
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[gpg]
+	program = /opt/homebrew/bin/gpg

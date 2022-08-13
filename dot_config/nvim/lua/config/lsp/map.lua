@@ -1,4 +1,4 @@
-require('lib.map')
+local map = require("lib.map").map
 
 map('n', '<leader>ad', ':lua vim.lsp.buf.definition()<CR>')
 map('n', '<leader>aD', ':lua vim.lsp.buf.declaration()<CR>')

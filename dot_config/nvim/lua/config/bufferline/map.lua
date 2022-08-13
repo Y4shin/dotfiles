@@ -1,4 +1,4 @@
-require("lib.map")
+local map = require("lib.map").map
 
 
 map("n", "<leader>bl", ":BufferLineCycleNext<CR>", {silent=true})

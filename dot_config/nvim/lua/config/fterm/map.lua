@@ -1,4 +1,4 @@
-require("lib.map")
+local map = require("lib.map").map
 
 map('n', '<Leader>T', '<CMD>lua require("FTerm").toggle()<CR>', { silent = true })
 map('t', '<C-t>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { silent = true })

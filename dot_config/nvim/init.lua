@@ -29,13 +29,11 @@
 
 
 -- List of configs to load
-local configs = {"nvim", "nvim-tree", "treesitter", "lsp", "nvim-cmp", "luasnip", "formatter", "color", "bufferline",
-                 "scope", "fterm", "consolation"}
-
+local configs = require("globals").configs
 -- Load packer (package manager)
-require("plugins")
+require("plugins").setup()
 
-local isModuleAvailable = require("lib.mod").isModuleAvailable
+local maybeRequire = require("lib.mod").maybeRequire
 -- Defining a function to check if a module exists
 -- Loop over specified config folders
 for _, config_name in ipairs(configs) do
@@ -43,20 +41,20 @@ for _, config_name in ipairs(configs) do
   local config_package = "config." .. config_name
 
   -- Check if init config exists and load it if it does.
-  local init_package = config_package
-  if isModuleAvailable(init_package) then
-    require(init_package)
+  local init_package = maybeRequire(config_package)
+  if init_package.ok then
+    init_package.package.setup()
   end
 
   -- Check if map config exists and load it if it does.
-  local map_package = config_package .. ".map"
-  if isModuleAvailable(map_package) then
-    require(map_package)
+  local map_package = maybeRequire(config_package .. ".map")
+  if map_package.ok then
+    map_package.package.setup()
   end
 
   -- Check if after config exists and load it if it does.
-  local after_package = config_package .. ".after"
-  if isModuleAvailable(after_package) then
-    require(after_package)
-  end
+  --local after_package = maybeRequire(config_package .. ".after")
+  --if after_package.ok then
+  --  after_package.package.setup()
+  --end
 end

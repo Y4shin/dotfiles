@@ -1,26 +1,33 @@
-local map = require("lib.map").map
+local mymodule = {}
 
--- Nvim Tree
+function mymodule.setup()
+  local map = require("lib.map").map
 
-map("n", "<leader>t", ":NvimTreeToggle<CR>", { silent = true })
+  -- Nvim Tree
+
+  map("n", "<leader>t", ":NvimTreeToggle<CR>", { silent = true })
 
 
--- Pane Controls
+  -- Pane Controls
 
-map("n", "<leader>wh", ":wincmd h<CR>", { silent = true })
-map("n", "<leader>wj", ":wincmd j<CR>", { silent = true })
-map("n", "<leader>wk", ":wincmd k<CR>", { silent = true })
-map("n", "<leader>wl", ":wincmd l<CR>", { silent = true })
-map("n", "<leader>ws", ":split<CR>", { silent = true })
-map("n", "<leader>w<S-s>", ":vsplit<CR>", { silent = true })
-map("n", "<leader>wq", ":q<CR>", { silent = true })
+  map("n", "<leader>wh", ":wincmd h<CR>", { silent = true })
+  map("n", "<leader>wj", ":wincmd j<CR>", { silent = true })
+  map("n", "<leader>wk", ":wincmd k<CR>", { silent = true })
+  map("n", "<leader>wl", ":wincmd l<CR>", { silent = true })
+  map("n", "<leader>ws", ":split<CR>", { silent = true })
+  map("n", "<leader>w<S-s>", ":vsplit<CR>", { silent = true })
+  map("n", "<leader>wq", ":q<CR>", { silent = true })
 
--- Fold Controls
+  -- Fold Controls
 
-map("n", "<leader>fo", ":foldopen!<CR>", { silent = true })
-map("n", "<leader>fc", ":foldclose!<CR>", { silent = true })
-map("n", "<leader>ft", ":foldtoggle!<CR>", { silent = true })
+  map("n", "<leader>fo", ":foldopen!<CR>", { silent = true })
+  map("n", "<leader>fc", ":foldclose!<CR>", { silent = true })
+  map("n", "<leader>ft", ":foldtoggle!<CR>", { silent = true })
 
--- Buffer Controls
+  -- Buffer Controls
 
-map("n", "<leader>bj", ":bp|bd #<CR>", {})
+  map("n", "<leader>bj", ":bp|bd #<CR>", {})
+end
+
+return mymodule
+
